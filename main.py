@@ -34,26 +34,26 @@ class Game:
                 self.map_data.append(line)
     
     def new(self):
-        # init all variables, setup groups, instantiate classes
+        # init all variables, set up groups, instantiate classes etc
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
-        self.enemy = pg.sprite.Group()
+        self.enemies = pg.sprite.Group()
+        self.player = pg.sprite.Group()
+        # create player object - top left corner will be (10,10)
         # self.player = Player(self, 10, 10)
+        # create 10 unit rectangle
         # for x in range(10, 20):
-        #     Wall(self, x, 5)
-        for row, tiles in enumerate(self.map_data):
-            print(self.map_data)
-            # print(row)
-            # print(tiles)
+            # Wall(self, x, 5)
+        for row, tiles in enumerate(self.map_data): # function - creates tuples of 2 elements, tuple[0] being the index and tuple[1] being the actual element
+            print(tiles)
             for col, tile in enumerate(tiles):
-                # print(col)
-                # print(tile)
+                print(tile)
                 if tile == '1':
                     Wall(self, col, row)
                 if tile == 'P':
-                    self.player = Player(self, col, row)
+                    self.player = Player(self, col, row) 
                 if tile == 'E':
-                    self.enemy = Enemy(self, col, row)
+                    Enemy(self, col, row)
 
     def run(self): 
         self.playing = True
@@ -75,7 +75,7 @@ class Game:
         for y in range(0, WIDTH, TILESIZE):
             pg.draw.line(self.screen, LIGHTGREY, (0, y), (WIDTH, y))
     def draw(self):
-        self.screen.fill(BGCOLOR)
+        self.screen.fill(DARKGREEN)
         self.draw_grid()
         self.all_sprites.draw(self.screen)
         pg.display.flip()
@@ -87,7 +87,7 @@ class Game:
             # if event.type == pg.KEYDOWN:
             #     if event.key == pg.K_LEFT:
             #         # moving left
-            #         self.player.move(dx=-1)
+            #         self.player.move(dx=-1)   
             #     if event.key == pg.K_RIGHT:
             #          # moving right
             #         self.player.move(dx=1)
