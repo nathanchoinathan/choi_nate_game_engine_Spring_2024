@@ -3,6 +3,7 @@
 # import necessary modules
 # my first source control edit
 # test
+# test number 2
 import pygame as pg 
 import sys
 from settings import *
