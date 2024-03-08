@@ -18,6 +18,7 @@ class Player(Sprite):
         self.vx, self.vy = 0, 0
         self.x = x * TILESIZE
         self.y = y * TILESIZE
+        self.lives = 10
 
     # def move(self, dx=0, dy=0):
     #    self.x += dx
@@ -58,6 +59,13 @@ class Player(Sprite):
                 self.vy = 0
                 self.rect.y = self.y
 
+    def collide_with_enemies(self, kill):
+        hits = pg.sprite.spritecollide(self, self.game.enemies, kill)
+        if hits:
+            self.lives -=1
+            print(self.lives)
+            return True
+
     def update(self):
     #    self.rect.x = self.x * TILESIZE
     #    self.rect.y = self.y * TILESIZE
@@ -70,6 +78,9 @@ class Player(Sprite):
         self.rect.y = self.y
         #add y collision l8r
         self.collide_with_walls('y')
+        if self.collide_with_enemies(False):
+            if self.lives == 0:
+                self.game.player.kill()
 
 # create a wall class
 
