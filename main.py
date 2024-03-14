@@ -42,6 +42,7 @@ class Game:
         self.walls = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = pg.sprite.Group()
+        self.coin = pg.sprite.Group()
         # create player object - top left corner will be (10,10)
         # self.player = Player(self, 10, 10)
         # create 10 unit rectangle
@@ -57,6 +58,8 @@ class Game:
                     self.player = Player(self, col, row) 
                 if tile == 'E':
                     Enemy(self, col, row)
+                if tile == 'C':
+                    Coin(self, col, row)
 
     def run(self): 
         self.playing = True
