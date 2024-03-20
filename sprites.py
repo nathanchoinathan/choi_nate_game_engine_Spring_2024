@@ -87,6 +87,7 @@ class Player(Sprite):
         self.rect.y = self.y
         #add y collision l8r
         self.collide_with_walls('y')
+        self.collide_with_group(self.game.coins, True)
         if self.collide_with_enemies(False):
             if self.lives == 0:
                 self.game.player.kill()
