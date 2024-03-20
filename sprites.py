@@ -59,14 +59,16 @@ class Player(Sprite):
                     self.y = hits[0].rect.bottom
                 self.vy = 0
                 self.rect.y = self.y
-
+    
+    # colliding with enemies
     def collide_with_enemies(self, kill):
         hits = pg.sprite.spritecollide(self, self.game.enemies, kill)
         if hits:
             self.lives -=1
             print(self.lives)
             return True
-        
+    
+    #colliding with coin 
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
@@ -88,10 +90,10 @@ class Player(Sprite):
         if self.collide_with_enemies(False):
             if self.lives == 0:
                 self.game.player.kill()
-# Mr.Cozort coin
+# create a coin class
 class Coin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites
+        self.groups = game.all_sprites, game.coins
         pg.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -105,7 +107,6 @@ class Coin(pg.sprite.Sprite):
 
 
 # create a wall class
-
 class Wall(Sprite):
     # initialize Wall class with same attributes as Player class
     def __init__(self, game, x, y):
@@ -120,6 +121,7 @@ class Wall(Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
+# create a enemy class
 class Enemy(Sprite):
     # initiate Enemy class with similar attributes as Player class
     def __init__(self, game, x, y):
@@ -137,6 +139,7 @@ class Enemy(Sprite):
         self.y = y * TILESIZE
         self.vx, self.vy = ENEMY_SPEED, 0
  
+    # colliding with walls
     def collide_with_walls(self):
             hits = pg.sprite.spritecollide(self, self.game.walls, False)
             if hits:

@@ -2,8 +2,7 @@
  
 # import necessary modules
 # my first source control edit
-# test
-# test number 2
+
 import pygame as pg 
 import sys
 from settings import *
@@ -42,7 +41,7 @@ class Game:
         self.walls = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.player = pg.sprite.Group()
-        self.coin = pg.sprite.Group()
+        self.coins = pg.sprite.Group()
         # create player object - top left corner will be (10,10)
         # self.player = Player(self, 10, 10)
         # create 10 unit rectangle
@@ -68,7 +67,7 @@ class Game:
             self.events()
             self.update()
             self.draw()
-    def quite(self):
+    def quit(self):
         pg.quit()
         sys.exit()
 
