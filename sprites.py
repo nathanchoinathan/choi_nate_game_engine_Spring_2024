@@ -18,8 +18,9 @@ class Player(Sprite):
         self.vx, self.vy = 0, 0
         self.x = x * TILESIZE
         self.y = y * TILESIZE
-        self.lives = 1
+        self.lives = 100
         self.moneybag = 0
+        self.speed = 300
 
     # def move(self, dx=0, dy=0):
     #    self.x += dx
@@ -29,13 +30,13 @@ class Player(Sprite):
         self.vx, self.vy = 0, 0
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT] or keys[pg.K_a]:
-            self.vx = -PLAYER_SPEED
+            self.vx = -self.speed
         if keys[pg.K_RIGHT] or keys[pg.K_d]:
-            self.vx = PLAYER_SPEED
+            self.vx = self.speed
         if keys[pg.K_UP] or keys[pg.K_w]:
-            self.vy = -PLAYER_SPEED
+            self.vy = -self.speed
         if keys[pg.K_DOWN] or keys[pg.K_s]:
-            self.vy = PLAYER_SPEED
+            self.vy = self.speed
         if self.vx != 0 and self.vy != 0:
             self.vx *= 0.7071
             self.vy *= 0.7071
@@ -74,6 +75,7 @@ class Player(Sprite):
         if hits:
             if str(hits[0].__class__.__name__) == "Coin":
                 self.moneybag += 1
+                self.speed += 100
 
     def update(self):
     #    self.rect.x = self.x * TILESIZE
@@ -91,6 +93,7 @@ class Player(Sprite):
         if self.collide_with_enemies(False):
             if self.lives == 0:
                 self.game.player.kill()
+                self.collide_with_group(self.game.coins, True)
 # create a coin class
 class Coin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -104,7 +107,6 @@ class Coin(pg.sprite.Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
-
 
 
 # create a wall class
