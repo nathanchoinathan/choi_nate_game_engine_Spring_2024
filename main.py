@@ -107,7 +107,8 @@ class Game:
             #     if event.key == pg.K_UP:
             #         # moving up
             #         self.player.move(dy=-1)
-                            
+
+    # defined the start screen                      
     def show_start_screen(self):
         self.screen.fill(BGCOLOR)
         self.draw_text(self.screen, "This is the start screen - press any key to play", 24, WHITE, WIDTH/2, HEIGHT/2)
