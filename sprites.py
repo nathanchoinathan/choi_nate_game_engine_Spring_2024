@@ -65,7 +65,7 @@ class Player(Sprite):
     def collide_with_enemies(self, kill):
         hits = pg.sprite.spritecollide(self, self.game.enemies, kill)
         if hits:
-            self.lives -=1
+            self.lives -=5
             print(self.lives)
             return True
     
