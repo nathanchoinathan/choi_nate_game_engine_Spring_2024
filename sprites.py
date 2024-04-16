@@ -4,16 +4,40 @@
 import pygame as pg
 from pygame.sprite import Sprite
 from settings import * 
+from os import path
 
 # create a player class
 
+dir = path.dirname(__file__)
+img_dir = path.join(dir, 'images')
+
+SPRITESHEET = "theBell.png"
+game_folder = path.dirname(__file__)
+img_folder = path.join(game_folder, 'images')
+
+class Spritesheet:
+    # utility class for loading and parsing spritesheets
+    def __init__(self, filename):
+        self.spritesheet = pg.image.load(filename).convert()
+
+    def get_image(self, x, y, width, height):
+        # grab an image out of a larger spritesheet
+        image = pg.Surface((width, height))
+        image.blit(self.spritesheet, (0, 0), (x, y, width, height))
+        # image = pg.transform.scale(image, (width, height))
+        image = pg.transform.scale(image, (width * 1, height * 1))
+        return image
 class Player(Sprite):
     def __init__(self, game, x, y):
+        
         self.groups = game.all_sprites
         Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.spritesheet = Spritesheet(path.join(img_folder, SPRITESHEET))
+        self.load_images()
         self.image.fill(SKYBLUE)
+        self.image = self.standing_frames[0]
         self.rect = self.image.get_rect()
         self.vx, self.vy = 0, 0
         self.x = x * TILESIZE
@@ -21,6 +45,44 @@ class Player(Sprite):
         self.lives = 100
         self.moneybag = 0
         self.speed = 300
+        self.current_frame = 0
+        self.last_update = 0
+        self.material = True
+        self.jumping = False
+        self.walking = False
+    def load_images(self):
+        self.standing_frames = [self.spritesheet.get_image(0, 0, 32, 32),
+                                self.spritesheet.get_image(32, 0, 32, 32)]
+        for frame in self.standing_frames:
+            frame.set_colorkey(BLACK)
+        self.walk_frames_r = [self.spritesheet.get_image(678, 860, 120, 201),
+                              self.spritesheet.get_image(692, 1458, 120, 207)]
+        self.walk_frames_l = []
+        for frame in self.walk_frames_r:
+            frame.set_colorkey(BLACK)
+            self.walk_frames_l.append(pg.transform.flip(frame, True, False))
+        self.jump_frame = self.spritesheet.get_image(256, 0, 128, 128)
+        self.jump_frame.set_colorkey(BLACK)
+    def animate(self):
+        now = pg.time.get_ticks()
+        if not self.jumping and not self.walking:
+            if now - self.last_update > 500:
+                self.last_update = now
+                self.current_frame = (self.current_frame + 1) % len(self.standing_frames)
+                bottom = self.rect.bottom
+                self.image = self.standing_frames[self.current_frame]
+                self.rect = self.image.get_rect()
+                self.rect.bottom = bottom
+        if self.jumping:
+            bottom = self.rect.bottom
+            self.image = self.jump_frame
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+
+    def load_images(self):
+        self.standing_frames = [self.spritesheet.get_image(0,0, 32, 32), 
+                                self.spritesheet.get_image(32,0, 32, 32)]
+        
 
     # def move(self, dx=0, dy=0):
     #    self.x += dx
@@ -78,6 +140,7 @@ class Player(Sprite):
                 self.speed += 100
 
     def update(self):
+        self.animate()
     #    self.rect.x = self.x * TILESIZE
     #    self.rect.y = self.y * TILESIZE
         self.get_keys()
