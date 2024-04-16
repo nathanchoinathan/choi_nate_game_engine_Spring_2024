@@ -79,9 +79,7 @@ class Player(Sprite):
             self.rect = self.image.get_rect()
             self.rect.bottom = bottom
 
-    def load_images(self):
-        self.standing_frames = [self.spritesheet.get_image(0,0, 32, 32), 
-                                self.spritesheet.get_image(32,0, 32, 32)]
+
         
 
     # def move(self, dx=0, dy=0):
