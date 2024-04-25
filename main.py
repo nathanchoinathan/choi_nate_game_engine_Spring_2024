@@ -111,14 +111,14 @@ class Game:
     # defined the start screen                      
     def show_start_screen(self):
         self.screen.fill(DARKGREY)
-        self.draw_text(self.screen, "This is the start screen - press any key to play", 24, WHITE, WIDTH/2, HEIGHT/2)
+        self.draw_text(self.screen, "welcome to skbiti ohio rizz with baby gronk- press with you gyatt to play", 24, WHITE, WIDTH/2, HEIGHT/2)
         pg.display.flip()
         self.wait_for_key()
     def show_go_screen(self):
         if not self.running:
             return
         self.screen.fill(DARKGREY)
-        self.draw_text(self.screen, "This is the GO screen - press any key to play", 24, WHITE, WIDTH/2, HEIGHT/2)
+        self.draw_text(self.screen, "welcome to skbiti ohio rizz with baby gronk- press with you gyatt to play", 24, WHITE, WIDTH/2, HEIGHT/2)
         pg.display.flip()
         self.wait_for_key()
 
