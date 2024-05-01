@@ -39,6 +39,7 @@ class Game:
         self.enemies = pg.sprite.Group()
         self.player = pg.sprite.Group()
         self.coins = pg.sprite.Group()
+        self.shield = pg.sprite.Group()
         # create player object - top left corner will be (10,10)
         # self.player = Player(self, 10, 10)
         # create 10 unit rectangle
@@ -56,6 +57,8 @@ class Game:
                     Enemy(self, col, row)
                 if tile == 'C':
                     Coin(self, col, row)
+                if tile == 'S':
+                    Shield(self, col, row)
 
     def run(self): 
         self.playing = True
@@ -111,14 +114,14 @@ class Game:
     # defined the start screen                      
     def show_start_screen(self):
         self.screen.fill(DARKGREY)
-        self.draw_text(self.screen, "welcome to skbiti ohio rizz with baby gronk- press with you gyatt to play", 24, WHITE, WIDTH/2, HEIGHT/2)
+        self.draw_text(self.screen, "press any button to start", 24, WHITE, WIDTH/2, HEIGHT/2)
         pg.display.flip()
         self.wait_for_key()
     def show_go_screen(self):
         if not self.running:
             return
         self.screen.fill(DARKGREY)
-        self.draw_text(self.screen, "welcome to skbiti ohio rizz with baby gronk- press with you gyatt to play", 24, WHITE, WIDTH/2, HEIGHT/2)
+        self.draw_text(self.screen, "press any button to start", 24, WHITE, WIDTH/2, HEIGHT/2)
         pg.display.flip()
         self.wait_for_key()
 

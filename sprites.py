@@ -11,7 +11,7 @@ from os import path
 dir = path.dirname(__file__)
 img_dir = path.join(dir, 'images')
 
-SPRITESHEET = "theBell.png"
+SPRITESHEET = "sonny.png"
 game_folder = path.dirname(__file__)
 img_folder = path.join(game_folder, 'images')
 
@@ -136,7 +136,9 @@ class Player(Sprite):
             if str(hits[0].__class__.__name__) == "Coin":
                 self.moneybag += 1
                 self.speed += 100
-
+            if str(hits[0].__class__.__name__) == "Shield":
+                self.lives = 1000000
+    
     def update(self):
         self.animate()
     #    self.rect.x = self.x * TILESIZE
@@ -151,10 +153,11 @@ class Player(Sprite):
         #add y collision l8r
         self.collide_with_walls('y')
         self.collide_with_group(self.game.coins, True)
+        self.collide_with_group(self.game.shield, True)
         if self.collide_with_enemies(False):
             if self.lives == 0:
                 self.game.player.kill()
-                self.collide_with_group(self.game.coins, True)
+
 # create a coin class
 class Coin(pg.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -169,6 +172,18 @@ class Coin(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
+class Shield(Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.shield
+        pg.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.image.fill(SKYBLUE)
+        self.rect = self.image.get_rect()
+        self.x = x
+        self.y = y
+        self.rect.x = x * TILESIZE
+        self.rect.y = y * TILESIZE
 
 # create a wall class
 class Wall(Sprite):
