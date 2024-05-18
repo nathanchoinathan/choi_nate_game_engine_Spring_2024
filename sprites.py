@@ -133,6 +133,7 @@ class Player(Sprite):
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
+            # powerup abilities
             if str(hits[0].__class__.__name__) == "Coin":
                 self.moneybag += 1
                 self.speed += 100
@@ -150,8 +151,9 @@ class Player(Sprite):
         # added x collision
         self.collide_with_walls('x')
         self.rect.y = self.y
-        #add y collision l8r
+        # add y collision l8r
         self.collide_with_walls('y')
+        # item colisions
         self.collide_with_group(self.game.coins, True)
         self.collide_with_group(self.game.shield, True)
         if self.collide_with_enemies(False):
@@ -172,7 +174,9 @@ class Coin(pg.sprite.Sprite):
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
 
+# created shield class
 class Shield(Sprite):
+    # initialized Shield class with same attributes as coin class
     def __init__(self, game, x, y):
         self.groups = game.all_sprites, game.shield
         pg.sprite.Sprite.__init__(self, self.groups)
