@@ -10,9 +10,17 @@ from sprites import *
 from random import randint
 from os import path
 from time import sleep
-
+import random
 # this is a function!
 # initializing the class
+
+# adding level values for each map
+LEVEL1 = "level1.txt"
+LEVEL2 = "level2.txt"
+
+#adding the levels to the list
+levels = [LEVEL1, LEVEL2]
+
 class Game:
     def __init__(self):
         pg.init()
@@ -22,15 +30,44 @@ class Game:
         pg.key.set_repeat(500, 100)
         self.load_data()
         self.running = True
+        self.current_level = 1
     # we have defined the run method in our game engine
     
     # load save game data
     def load_data(self):
         game_folder = path.dirname(__file__)
         self.map_data = []
-        with open(path.join(game_folder, 'map.txt'), 'rt') as f:
+        with open(path.join(game_folder, LEVEL1), 'rt') as f:
             for line in f:
                 self.map_data.append(line)
+    def change_level(self, lvl):
+        game_folder = path.dirname(__file__)
+        for s in self.all_sprites:
+            s.kill()
+        self.player.moneybag = 0
+        self.map_data = []
+        with open(path.join(game_folder, "level" + str(lvl)), 'rt') as f:
+            for line in f:
+                print(line)
+                self.map_data.append(line)
+        # repopulate the level with stuff
+        for i in range (0,10):
+            Coin(self, randint(0,32), randint(0,24))
+        for row, tiles in enumerate(self.map_data):
+            print(row)
+            for col, tile in enumerate(tiles):
+                print(col)
+                if tile == '1':
+                    Wall(self, col, row)
+                if tile == 'P':
+                    self.player = Player(self, col, row) 
+                if tile == 'E':
+                    Enemy(self, col, row)
+                if tile == 'C':
+                    Coin(self, col, row)
+                if tile == 'S':
+                    Shield(self, col, row)
+           
     
     def new(self):
         # init all variables, set up groups, instantiate classes etc
@@ -59,6 +96,7 @@ class Game:
                     Coin(self, col, row)
                 if tile == 'S':
                     Shield(self, col, row)
+        self.all_sprites.add(self.player)
 
     def run(self): 
         self.playing = True
@@ -67,12 +105,17 @@ class Game:
             self.events()
             self.update()
             self.draw()
+    
     def quit(self):
         pg.quit()
         sys.exit()
 
     def update(self):
+        # updating all sprites
         self.all_sprites.update()
+        if self.player.moneybag > 2:
+            self.current_level += 1
+            self.change_level(levels[self.current_level])
 
     def draw_grid(self):
         for x in range(0, WIDTH, TILESIZE):
@@ -97,6 +140,7 @@ class Game:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.quit()
+
             # if event.type == pg.KEYDOWN:
             #     if event.key == pg.K_LEFT:
             #         # moving left

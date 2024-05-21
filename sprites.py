@@ -129,7 +129,7 @@ class Player(Sprite):
             print(self.lives)
             return True
     
-    #colliding with coin 
+    #colliding with items/powerups 
     def collide_with_group(self, group, kill):
         hits = pg.sprite.spritecollide(self, group, kill)
         if hits:
@@ -139,7 +139,7 @@ class Player(Sprite):
                 self.speed += 100
             if str(hits[0].__class__.__name__) == "Shield":
                 self.lives = 1000000
-    
+                
     def update(self):
         self.animate()
     #    self.rect.x = self.x * TILESIZE
@@ -188,7 +188,7 @@ class Shield(Sprite):
         self.y = y
         self.rect.x = x * TILESIZE
         self.rect.y = y * TILESIZE
-
+     
 # create a wall class
 class Wall(Sprite):
     # initialize Wall class with same attributes as Player class
